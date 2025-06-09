@@ -1,5 +1,8 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,16 +16,22 @@ public class ConsultarCarrinhoTest {
 
     @BeforeEach
     public void iniciar() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-
-        // Remover mensagem de vazamento de dados devido aos testes utilizando login e senha
         ChromeOptions options = new ChromeOptions();
+        // Evita a mensagem "senha encontrada em vazamento"
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("credentials_enable_service", false);
+        prefs.put("profile.password_manager_enabled", false);
+        options.setExperimentalOption("prefs", prefs);
+
+        // Outras opções úteis para testes automatizados
         options.addArguments("--incognito");
         options.addArguments("--disable-extensions");
         options.addArguments("--disable-popup-blocking");
         options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
         options.setExperimentalOption("useAutomationExtension", false);
+
+        driver = new ChromeDriver(options); // AQUI está o ponto chave
+        driver.manage().window().maximize();
     }
 
     @Test

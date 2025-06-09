@@ -2,6 +2,9 @@ package steps;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -19,16 +22,22 @@ public class ConsultarCarrinhoBdd {
 
     @Before
     public void iniciar() {
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-
-        // Remover mensagem de vazamento de dados devido aos testes utilizando login e senha
         ChromeOptions options = new ChromeOptions();
+        // Evita a mensagem "senha encontrada em vazamento"
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("credentials_enable_service", false);
+        prefs.put("profile.password_manager_enabled", false);
+        options.setExperimentalOption("prefs", prefs);
+
+        // Outras opções úteis para testes automatizados
         options.addArguments("--incognito");
         options.addArguments("--disable-extensions");
         options.addArguments("--disable-popup-blocking");
         options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
         options.setExperimentalOption("useAutomationExtension", false);
+
+        driver = new ChromeDriver(options); // AQUI está o ponto chave
+        driver.manage().window().maximize();
     }
 
     @After
@@ -59,9 +68,9 @@ public class ConsultarCarrinhoBdd {
     }
 
     @When("valido o nome {string} e o preço {string}")
-    public void valido_o_nome_e_o_preço(String string, String string2) {
-        assertEquals("Sauce Labs Backpack", driver.findElement(By.cssSelector("[data-test='inventory-item-name']")).getText());
-        assertEquals("$29.99", driver.findElement(By.cssSelector("[data-test='inventory-item-price']")).getText());
+    public void valido_o_nome_e_o_preço(String nomeProduto, String precoProduto) {
+        assertEquals(nomeProduto, driver.findElement(By.cssSelector("[data-test='inventory-item-name']")).getText());
+        assertEquals(precoProduto, driver.findElement(By.cssSelector("[data-test='inventory-item-price']")).getText());
     }
 
     @When("clico no produto")
@@ -75,9 +84,9 @@ public class ConsultarCarrinhoBdd {
     }
 
     @When("valido novamente o nome {string} e o preço {string}")
-    public void valido_novamente_o_nome_e_o_preço(String string, String string2) {
-        assertEquals("Sauce Labs Backpack", driver.findElement(By.cssSelector("[data-test='inventory-item-name']")).getText());
-        assertEquals("$29.99", driver.findElement(By.cssSelector("[data-test='inventory-item-price']")).getText());
+    public void valido_novamente_o_nome_e_o_preço(String nomeProduto, String precoProduto) {
+        assertEquals(nomeProduto, driver.findElement(By.cssSelector("[data-test='inventory-item-name']")).getText());
+        assertEquals(precoProduto, driver.findElement(By.cssSelector("[data-test='inventory-item-price']")).getText());
     }
 
     @When("clico no botão Add to cart")
@@ -96,8 +105,8 @@ public class ConsultarCarrinhoBdd {
     }
 
     @Then("valido que o produto {string} com o preço {string} está presente no carrinho")
-    public void valido_que_o_produto_com_o_preço_está_presente_no_carrinho(String string, String string2) {
-        assertEquals("Sauce Labs Backpack", driver.findElement(By.cssSelector("[data-test='inventory-item-name']")).getText());
-        assertEquals("$29.99", driver.findElement(By.cssSelector("[data-test='inventory-item-price']")).getText());
+    public void valido_que_o_produto_com_o_preço_está_presente_no_carrinho(String nomeProduto, String precoProduto) {
+        assertEquals(nomeProduto, driver.findElement(By.cssSelector("[data-test='inventory-item-name']")).getText());
+        assertEquals(precoProduto, driver.findElement(By.cssSelector("[data-test='inventory-item-price']")).getText());
     }
 }

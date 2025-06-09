@@ -20,6 +20,6 @@ Feature: Consultar carrinho
     Then sou redirecionado para a página Cart
     And valido que o produto "<nomeProduto>" com o preço "<precoProduto>" está presente no carrinho
 
-  Examples:
-    | nomeProduto         | precoProduto | username      | password     |
-    | Sauce Labs Backpack | $29.99       | standard_user | secret_sauce |
+    Examples:
+      | skuProduto | nomeProduto         | precoProduto | username      | password     |
+      |          1 | Sauce Labs Backpack | $29.99       | standard_user | secret_sauce |
