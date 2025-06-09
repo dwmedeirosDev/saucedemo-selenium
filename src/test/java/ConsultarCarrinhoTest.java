@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class ConsultarCarrinhoTest {
     private WebDriver driver;
@@ -14,6 +15,14 @@ public class ConsultarCarrinhoTest {
     public void iniciar() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
+
+        // Remover mensagem de vazamento de dados devido aos testes utilizando login e senha
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--incognito");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--disable-popup-blocking");
+        options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
+        options.setExperimentalOption("useAutomationExtension", false);
     }
 
     @Test
