@@ -67,15 +67,14 @@ public class ConsultarCarrinhoBdd {
 
     }
 
-    @When("valido o nome {string} e o preço {string}")
-    public void valido_o_nome_e_o_preço(String nomeProduto, String precoProduto) {
-        assertEquals(nomeProduto, driver.findElement(By.cssSelector("[data-test='inventory-item-name']")).getText());
-        assertEquals(precoProduto, driver.findElement(By.cssSelector("[data-test='inventory-item-price']")).getText());
+    @When("valido o sku {string} e o nome {string}")
+    public void valido_o_sku_e_o_nome(String skuProduto, String nomeProduto) {
+        assertEquals(nomeProduto, driver.findElement(By.id("item_" + skuProduto + "_title_link")).getText());
     }
 
-    @When("clico no produto")
-    public void clico_no_produto() {
-        driver.findElement(By.cssSelector("[data-test='item-4-title-link']")).click();
+    @When("clico no produto com sku {string}")
+    public void clico_no_produto_com_sku(String skuProduto) {
+        driver.findElement(By.cssSelector("[data-test='item-" + skuProduto + "-title-link']")).click();
     }
 
     @Then("sou redirecionado para a página Inventory Item")
