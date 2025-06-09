@@ -7,7 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class Consultar {
+public class ConsultarCarrinhoTest {
     private WebDriver driver;
 
     @BeforeEach
@@ -17,7 +17,7 @@ public class Consultar {
     }
 
     @Test
-    public void ConsultarCompra() {
+    public void ConsultarCarrinho() {
         driver.get("https://www.saucedemo.com/");
 
         String usuario = "standard_user";
