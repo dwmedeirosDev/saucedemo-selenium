@@ -2,48 +2,23 @@ package steps;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import pages.Base;
+
 public class ConsultarCarrinhoBdd {
 
-    WebDriver driver;
+    final WebDriver driver;
 
-    @Before
-    public void iniciar() {
-        ChromeOptions options = new ChromeOptions();
-        // Evita a mensagem "senha encontrada em vazamento"
-        Map<String, Object> prefs = new HashMap<>();
-        prefs.put("credentials_enable_service", false);
-        prefs.put("profile.password_manager_enabled", false);
-        options.setExperimentalOption("prefs", prefs);
-
-        // Outras opções úteis para testes automatizados
-        options.addArguments("--incognito");
-        options.addArguments("--disable-extensions");
-        options.addArguments("--disable-popup-blocking");
-        options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
-        options.setExperimentalOption("useAutomationExtension", false);
-
-        driver = new ChromeDriver(options); // AQUI está o ponto chave
-        driver.manage().window().maximize();
+    public ConsultarCarrinhoBdd(Base base){
+        this.driver = base.driver;
     }
 
-    @After
-    public void finalizar() {
-        driver.quit();
-    }
 
     @Given("que acesso o site {string}")
     public void que_acesso_o_site(String url) {
