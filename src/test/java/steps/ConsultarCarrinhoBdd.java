@@ -10,46 +10,50 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import pages.Base;
+import pages.LoginPage;
+import pages.InventoryPage;
 
 public class ConsultarCarrinhoBdd {
 
     final WebDriver driver;
+    private LoginPage loginPage;
+    private InventoryPage inventoryPage;
 
     public ConsultarCarrinhoBdd(Base base){
         this.driver = base.driver;
     }
 
-
     @Given("que acesso o site {string}")
     public void que_acesso_o_site(String url) {
-        driver.get(url);
+        loginPage = new LoginPage(driver);
+        loginPage.acessarLoginPage(url);
     }
 
     @When("insiro o usuário {string} e a senha {string}")
     public void insiro_o_usuário_e_a_senha(String username, String password) {
-        driver.findElement(By.id("user-name")).sendKeys(username);
-        driver.findElement(By.id("password")).sendKeys(password);
+        loginPage.preencherUser(username);
+        loginPage.preencherPassword(password);
     }
 
     @When("clico no botão Login")
     public void clico_no_botão_login() {
-        driver.findElement(By.id("login-button")).click();
+        loginPage.clicarLogin();
     }
 
     @Then("sou redirecionado para a página Inventory")
     public void sou_redirecionado_para_a_página_inventory() {
-        assertEquals("Products", driver.findElement(By.cssSelector("[data-test='title']")).getText());
-
+       inventoryPage = new InventoryPage(driver);
+       assertEquals("Products", inventoryPage.lerTituloPageInventory());
     }
 
     @When("valido o sku {string} e o nome {string}")
     public void valido_o_sku_e_o_nome(String skuProduto, String nomeProduto) {
-        assertEquals(nomeProduto, driver.findElement(By.id("item_" + skuProduto + "_title_link")).getText());
+        assertEquals(nomeProduto, inventoryPage.verificarProdutoSku(skuProduto));
     }
 
     @When("clico no produto com sku {string}")
     public void clico_no_produto_com_sku(String skuProduto) {
-        driver.findElement(By.cssSelector("[data-test='item-" + skuProduto + "-title-link']")).click();
+        inventoryPage.selecionarProdutoSku(skuProduto);
     }
 
     @Then("sou redirecionado para a página Inventory Item")
