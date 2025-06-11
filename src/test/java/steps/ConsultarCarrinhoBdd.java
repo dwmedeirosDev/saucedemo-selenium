@@ -2,22 +2,24 @@ package steps;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
 import pages.Base;
-import pages.LoginPage;
+import pages.CartPage;
+import pages.InventoryItemPage;
 import pages.InventoryPage;
+import pages.LoginPage;
 
 public class ConsultarCarrinhoBdd {
 
     final WebDriver driver;
     private LoginPage loginPage;
     private InventoryPage inventoryPage;
+    private InventoryItemPage inventoryItemPage;
+    private CartPage cartPage;
 
     public ConsultarCarrinhoBdd(Base base){
         this.driver = base.driver;
@@ -58,33 +60,35 @@ public class ConsultarCarrinhoBdd {
 
     @Then("sou redirecionado para a página Inventory Item")
     public void sou_redirecionado_para_a_página_inventory_item() {
-        assertEquals("Back to products", driver.findElement(By.cssSelector("[data-test='back-to-products']")).getText());
+        inventoryItemPage = new InventoryItemPage(driver);
+        assertEquals("Back to products", inventoryItemPage.LerTituloPageInventoryItem());
     }
 
     @When("valido novamente o nome {string} e o preço {string}")
     public void valido_novamente_o_nome_e_o_preço(String nomeProduto, String precoProduto) {
-        assertEquals(nomeProduto, driver.findElement(By.cssSelector("[data-test='inventory-item-name']")).getText());
-        assertEquals(precoProduto, driver.findElement(By.cssSelector("[data-test='inventory-item-price']")).getText());
+        assertEquals(nomeProduto, inventoryItemPage.lerNomeProduto());
+        assertEquals(precoProduto, inventoryItemPage.lerPrecoProduto());
     }
 
     @When("clico no botão Add to cart")
     public void clico_no_botão_add_to_cart() {
-        driver.findElement(By.id("add-to-cart")).click();
+        inventoryItemPage.clicarAddToCart();
     }
 
     @When("clico no ícone do carrinho")
     public void clico_no_ícone_do_carrinho() {
-        driver.findElement(By.cssSelector("[data-test='shopping-cart-link']")).click();
+        inventoryItemPage.clicarCart();
     }
 
     @Then("sou redirecionado para a página Cart")
     public void sou_redirecionado_para_a_página_cart() {
-        assertEquals("Your Cart", driver.findElement(By.cssSelector("[data-test='title']")).getText());
+        cartPage = new CartPage(driver);
+        assertEquals("Your Cart", cartPage.lerTituloCartPage());
     }
 
-    @Then("valido que o produto {string} com o preço {string} está presente no carrinho")
-    public void valido_que_o_produto_com_o_preço_está_presente_no_carrinho(String nomeProduto, String precoProduto) {
-        assertEquals(nomeProduto, driver.findElement(By.cssSelector("[data-test='inventory-item-name']")).getText());
-        assertEquals(precoProduto, driver.findElement(By.cssSelector("[data-test='inventory-item-price']")).getText());
+    @Then("valido que o produto {string} com sku {string} e o preço {string} estão presentes no carrinho de compra")
+    public void validarProdutoCarrinho(String nomeProduto, String skuProduto, String precoProduto) {
+        assertEquals(nomeProduto, cartPage.lerNomeProduto(skuProduto));
+        assertEquals(precoProduto, cartPage.lerPrecoProduto());
     }
 }

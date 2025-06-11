@@ -15,7 +15,7 @@ Feature: Consultar carrinho
     And clico no botão Add to cart
     And clico no ícone do carrinho
     Then sou redirecionado para a página Cart
-    And valido que o produto "<nomeProduto>" com o preço "<precoProduto>" está presente no carrinho
+    And valido que o produto "<nomeProduto>" com sku "<skuProduto>" e o preço "<precoProduto>" estão presentes no carrinho de compra
 
     Examples:
       | skuProduto | nomeProduto             | precoProduto | username      | password     |
