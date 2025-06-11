@@ -21,7 +21,7 @@ public class ConsultarCarrinhoBdd {
     private InventoryItemPage inventoryItemPage;
     private CartPage cartPage;
 
-    public ConsultarCarrinhoBdd(Base base){
+    public ConsultarCarrinhoBdd(Base base) {
         this.driver = base.driver;
     }
 
@@ -44,8 +44,8 @@ public class ConsultarCarrinhoBdd {
 
     @Then("sou redirecionado para a página Inventory")
     public void sou_redirecionado_para_a_página_inventory() {
-       inventoryPage = new InventoryPage(driver);
-       assertEquals("Products", inventoryPage.lerTituloPageInventory());
+        inventoryPage = new InventoryPage(driver);
+        assertEquals("Products", inventoryPage.lerTituloPageInventory());
     }
 
     @When("valido o sku {string} e o nome {string}")
